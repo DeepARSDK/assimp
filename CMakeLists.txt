@@ -643,7 +643,7 @@ ELSE()
       # Don't build or install all of Draco by default
       ADD_SUBDIRECTORY( "contrib/draco" EXCLUDE_FROM_ALL )
 
-      if(MSVC OR WIN32)
+      if(MSVC)
         set(draco_LIBRARIES "draco")
       else()
         if(BUILD_SHARED_LIBS)
