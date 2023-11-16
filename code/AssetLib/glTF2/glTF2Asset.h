@@ -52,6 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_volume full
  *   KHR_materials_ior full
  *   KHR_materials_emissive_strength full
+ *   KHR_materials_specular import only
  */
 #ifndef GLTF2ASSET_H_INC
 #define GLTF2ASSET_H_INC
@@ -721,6 +722,7 @@ const vec4 defaultDiffuseFactor = { 1, 1, 1, 1 };
 const vec3 defaultSpecularFactor = { 1, 1, 1 };
 const vec3 defaultSheenFactor = { 0, 0, 0 };
 const vec3 defaultAttenuationColor = { 1, 1, 1 };
+const vec3 defaultSpecularColorFactor = { 1, 1, 1 };
 
 struct TextureInfo {
     Ref<Texture> texture;
@@ -809,6 +811,16 @@ struct MaterialEmissiveStrength {
     void SetDefaults();
 };
 
+struct MaterialSpecular {
+    float specularFactor = 0.f;
+    TextureInfo specularTexture;
+    vec3 specularColorFactor;
+    TextureInfo specularColorTexture;
+
+    MaterialSpecular() { SetDefaults(); }
+    void SetDefaults();
+};
+
 //! The material appearance of a primitive.
 struct Material : public Object {
     //PBR metallic roughness properties
@@ -846,6 +858,9 @@ struct Material : public Object {
 
     //extension: KHR_materials_emissive_strength
     Nullable<MaterialEmissiveStrength> materialEmissiveStrength;
+
+    // extension: KHR_materials_specular
+    Nullable<MaterialSpecular> materialSpecular;
 
     Material() { SetDefaults(); }
     void Read(Value &obj, Asset &r);
@@ -1118,6 +1133,7 @@ public:
         bool KHR_materials_volume;
         bool KHR_materials_ior;
         bool KHR_materials_emissive_strength;
+        bool KHR_materials_specular;
         bool KHR_draco_mesh_compression;
         bool FB_ngon_encoding;
         bool KHR_texture_basisu;
@@ -1133,6 +1149,7 @@ public:
                 KHR_materials_volume(false),
                 KHR_materials_ior(false),
                 KHR_materials_emissive_strength(false),
+                KHR_materials_specular(false),
                 KHR_draco_mesh_compression(false),
                 FB_ngon_encoding(false),
                 KHR_texture_basisu(false) {

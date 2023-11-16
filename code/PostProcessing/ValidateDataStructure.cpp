@@ -695,7 +695,8 @@ void ValidateDSProcess::Validate(const aiMaterial *pMaterial) {
     // TODO: that's a relict of the past, where texture type and index were baked
     // into the material string ... we could do that in one single pass.
     SearchForInvalidTextures(pMaterial, aiTextureType_DIFFUSE);
-    SearchForInvalidTextures(pMaterial, aiTextureType_SPECULAR);
+    // Do not validate specular texture, since the AI_MATKEY_SPECULAR_COLOR_TEXTURE can be imported without AI_MATKEY_SPECULAR_TEXTURE
+    //SearchForInvalidTextures(pMaterial, aiTextureType_SPECULAR);
     SearchForInvalidTextures(pMaterial, aiTextureType_AMBIENT);
     SearchForInvalidTextures(pMaterial, aiTextureType_EMISSIVE);
     SearchForInvalidTextures(pMaterial, aiTextureType_OPACITY);

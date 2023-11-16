@@ -364,6 +364,16 @@ static aiMaterial *ImportMaterial(std::vector<int> &embeddedTexIdxs, Asset &r, M
             aimat->AddProperty(&emissiveStrength.emissiveStrength, 1, AI_MATKEY_EMISSIVE_INTENSITY);
         }
 
+        // KHR_materials_specular
+        if (mat.materialSpecular.isPresent) {
+            MaterialSpecular& specular = mat.materialSpecular.value;
+
+            aimat->AddProperty(&specular.specularFactor, 1, AI_MATKEY_SPECULAR_FACTOR);
+            SetMaterialTextureProperty(embeddedTexIdxs, r, specular.specularTexture, aimat, AI_MATKEY_SPECULAR_TEXTURE);
+            SetMaterialColorProperty(r, specular.specularColorFactor, aimat, AI_MATKEY_SPECULAR_COLOR_FACTOR);
+            SetMaterialTextureProperty(embeddedTexIdxs, r, specular.specularColorTexture, aimat, AI_MATKEY_SPECULAR_COLOR_TEXTURE);
+        }
+
         return aimat;
     } catch (...) {
         delete aimat;

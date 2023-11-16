@@ -1323,6 +1323,19 @@ inline void Material::Read(Value &material, Asset &r) {
             }
         }
 
+        if (r.extensionsUsed.KHR_materials_specular) {
+            if (Value *curMaterialSpecular = FindObject(*extensions, "KHR_materials_specular")) {
+                MaterialSpecular specular;
+
+                ReadMember(*curMaterialSpecular, "specularFactor", specular.specularFactor);
+                ReadTextureProperty(r, *curMaterialSpecular, "specularTexture", specular.specularTexture);
+                ReadMember(*curMaterialSpecular, "specularColorFactor", specular.specularColorFactor);
+                ReadTextureProperty(r, *curMaterialSpecular, "specularColorTexture", specular.specularColorTexture);
+
+                this->materialSpecular = Nullable<MaterialSpecular>(specular);
+            }
+        }
+
         unlit = nullptr != FindObject(*extensions, "KHR_materials_unlit");
     }
 }
@@ -1368,6 +1381,12 @@ inline void MaterialIOR::SetDefaults() {
 inline void MaterialEmissiveStrength::SetDefaults() {
     //KHR_materials_emissive_strength properties
     emissiveStrength = 1.0f;
+}
+
+inline void MaterialSpecular::SetDefaults() {
+    // KHR_materials_specular
+    specularFactor = 1.0f;
+    SetVector(specularColorFactor, defaultSpecularColorFactor);
 }
 
 inline void Mesh::Read(Value &pJSON_Object, Asset &pAsset_Root) {
@@ -2042,6 +2061,7 @@ inline void Asset::ReadExtensionsUsed(Document &doc) {
     CHECK_EXT(KHR_materials_volume);
     CHECK_EXT(KHR_materials_ior);
     CHECK_EXT(KHR_materials_emissive_strength);
+    CHECK_EXT(KHR_materials_specular);
     CHECK_EXT(KHR_draco_mesh_compression);
     CHECK_EXT(KHR_texture_basisu);
 

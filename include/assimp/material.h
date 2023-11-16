@@ -1050,6 +1050,12 @@ extern "C" {
 #define AI_MATKEY_EMISSIVE_INTENSITY "$mat.emissiveIntensity", 0, 0
 #define AI_MATKEY_USE_AO_MAP "$mat.useAOMap", 0, 0
 
+// Specular
+// --------
+#define AI_MATKEY_SPECULAR_TEXTURE aiTextureType_SPECULAR, 0
+#define AI_MATKEY_SPECULAR_COLOR_FACTOR "$mat.specular.specularColorFactor", 0, 0
+#define AI_MATKEY_SPECULAR_COLOR_TEXTURE aiTextureType_SPECULAR, 1
+
 // ---------------------------------------------------------------------------
 // Pure key names for all texture-related properties
 //! @cond MATS_DOC_FULL
