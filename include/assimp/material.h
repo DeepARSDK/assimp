@@ -318,6 +318,8 @@ enum aiTextureType {
     */
     aiTextureType_TRANSMISSION = 21,
 
+    aiTextureType_ANISOTROPY = 22,
+
     /** Unknown texture
      *
      *  A texture reference that does not match any of the definitions
@@ -331,7 +333,7 @@ enum aiTextureType {
 #endif
 };
 
-#define AI_TEXTURE_TYPE_MAX aiTextureType_TRANSMISSION
+#define AI_TEXTURE_TYPE_MAX aiTextureType_ANISOTROPY
 
 // -------------------------------------------------------------------------------
 // Get a string for a given aiTextureType
@@ -992,6 +994,8 @@ extern "C" {
 // Anisotropy factor. 0.0 = isotropic, 1.0 = anisotropy along tangent direction,
 // -1.0 = anisotropy along bitangent direction
 #define AI_MATKEY_ANISOTROPY_FACTOR "$mat.anisotropyFactor", 0, 0
+#define AI_MATKEY_ANISOTROPY_ROTATION "$mat.anisotropyRotation", 0, 0
+#define AI_MATKEY_ANISOTROPY_TEXTURE aiTextureType_ANISOTROPY, 0
 
 // Specular/Glossiness Workflow
 // ---------------------------

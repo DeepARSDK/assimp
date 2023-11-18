@@ -90,6 +90,8 @@ const char *aiTextureTypeToString(aiTextureType in) {
         return "Clearcoat";
     case aiTextureType_TRANSMISSION:
         return "Transmission";
+    case aiTextureType_ANISOTROPY:
+        return "Anisotropy";
     case aiTextureType_UNKNOWN:
         return "Unknown";
     default:

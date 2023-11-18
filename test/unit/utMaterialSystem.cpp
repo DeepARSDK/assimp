@@ -263,6 +263,7 @@ TEST_F(MaterialSystemTest, testMaterialTextureTypeEnum) {
         case aiTextureType_SHEEN:
         case aiTextureType_CLEARCOAT:
         case aiTextureType_TRANSMISSION:
+        case aiTextureType_ANISOTROPY:
         case aiTextureType_UNKNOWN:
             if (i > maxTextureType)
                 maxTextureType = i;
