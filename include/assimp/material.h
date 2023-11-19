@@ -320,6 +320,8 @@ enum aiTextureType {
 
     aiTextureType_ANISOTROPY = 22,
 
+    aiTextureType_IRIDESCENCE = 23,
+
     /** Unknown texture
      *
      *  A texture reference that does not match any of the definitions
@@ -333,7 +335,7 @@ enum aiTextureType {
 #endif
 };
 
-#define AI_TEXTURE_TYPE_MAX aiTextureType_ANISOTROPY
+#define AI_TEXTURE_TYPE_MAX aiTextureType_IRIDESCENCE
 
 // -------------------------------------------------------------------------------
 // Get a string for a given aiTextureType
@@ -996,6 +998,13 @@ extern "C" {
 #define AI_MATKEY_ANISOTROPY_FACTOR "$mat.anisotropyFactor", 0, 0
 #define AI_MATKEY_ANISOTROPY_ROTATION "$mat.anisotropyRotation", 0, 0
 #define AI_MATKEY_ANISOTROPY_TEXTURE aiTextureType_ANISOTROPY, 0
+
+#define AI_MATKEY_IRIDESCENCE_FACTOR "$mat.iridescenceFactor", 0, 0
+#define AI_MATKEY_IRIDESCENCE_TEXTURE aiTextureType_IRIDESCENCE, 0
+#define AI_MATKEY_IRIDESCENCE_IOR "$mat.iridescenceIor", 0, 0
+#define AI_MATKEY_IRIDESCENCE_THICKNESS_MAX "mat.iridescenceThicknessMax", 0, 0
+#define AI_MATKEY_IRIDESCENCE_THICKNESS_MIN "mat.iridescenceThicknessMin", 0, 0
+#define AI_MATKEY_IRIDESCENCE_THICKNESS_TEXTURE aiTextureType_IRIDESCENCE, 1
 
 // Specular/Glossiness Workflow
 // ---------------------------

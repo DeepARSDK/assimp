@@ -1348,6 +1348,21 @@ inline void Material::Read(Value &material, Asset &r) {
             }
         }
 
+        if (r.extensionsUsed.KHR_materials_iridescence) {
+            if (Value* curMaterialIridescence = FindObject(*extensions, "KHR_materials_iridescence")) {
+                MaterialIridescence iridescence;
+
+                ReadMember(*curMaterialIridescence, "iridescenceFactor", iridescence.iridescenceFactor);
+                ReadTextureProperty(r, *curMaterialIridescence, "iridescenceTexture", iridescence.iridescenceTexture);
+                ReadMember(*curMaterialIridescence, "iridescenceIor", iridescence.iridescenceIor);
+                ReadMember(*curMaterialIridescence, "iridescenceThicknessMinimum", iridescence.iridescenceThicknessMinimum);
+                ReadMember(*curMaterialIridescence, "iridescenceThicknessMaximum", iridescence.iridescenceThicknessMaximum);
+                ReadTextureProperty(r, *curMaterialIridescence, "iridescenceThicknessTexture", iridescence.iridescenceThicknessTexture);
+
+                this->materialIridescence = Nullable<MaterialIridescence>(iridescence);
+            }
+        }
+
         unlit = nullptr != FindObject(*extensions, "KHR_materials_unlit");
     }
 }
@@ -1405,6 +1420,14 @@ inline void MaterialAnisotropy::SetDefaults() {
     // KHR_materials_anisotropy
     anisotropyStrength = 0.0f;
     anisotropyRotation = 0.0f;
+}
+
+inline void MaterialIridescence::SetDefaults() {
+    // KHR_materials_iridescence
+    iridescenceFactor = 0.0f;
+    iridescenceIor = 1.3f;
+    iridescenceThicknessMinimum = 100.0f;
+    iridescenceThicknessMaximum = 400.0f;
 }
 
 inline void Mesh::Read(Value &pJSON_Object, Asset &pAsset_Root) {
@@ -2081,6 +2104,7 @@ inline void Asset::ReadExtensionsUsed(Document &doc) {
     CHECK_EXT(KHR_materials_emissive_strength);
     CHECK_EXT(KHR_materials_specular);
     CHECK_EXT(KHR_materials_anisotropy);
+    CHECK_EXT(KHR_materials_iridescence);
     CHECK_EXT(KHR_draco_mesh_compression);
     CHECK_EXT(KHR_texture_basisu);
 

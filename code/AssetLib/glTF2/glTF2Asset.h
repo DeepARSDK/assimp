@@ -54,6 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_emissive_strength full
  *   KHR_materials_specular import only
  *   KHR_materials_anisotropy import only
+ *   KHR_materials_iridescence import only
  */
 #ifndef GLTF2ASSET_H_INC
 #define GLTF2ASSET_H_INC
@@ -831,6 +832,18 @@ struct MaterialAnisotropy {
     void SetDefaults();
 };
 
+struct MaterialIridescence {
+    float iridescenceFactor = 0.f;
+    TextureInfo iridescenceTexture;
+    float iridescenceIor = 0.f;
+    float iridescenceThicknessMinimum = 0.f;
+    float iridescenceThicknessMaximum = 0.f;
+    TextureInfo iridescenceThicknessTexture;
+
+    MaterialIridescence() { SetDefaults(); }
+    void SetDefaults();
+};
+
 //! The material appearance of a primitive.
 struct Material : public Object {
     //PBR metallic roughness properties
@@ -874,6 +887,9 @@ struct Material : public Object {
 
     // extension: KHR_materials_anisotropy
     Nullable<MaterialAnisotropy> materialAnisotropy;
+
+    // extension: KHR_materials_iridescence
+    Nullable<MaterialIridescence> materialIridescence;
 
     Material() { SetDefaults(); }
     void Read(Value &obj, Asset &r);
@@ -1148,6 +1164,7 @@ public:
         bool KHR_materials_emissive_strength;
         bool KHR_materials_specular;
         bool KHR_materials_anisotropy;
+        bool KHR_materials_iridescence;
         bool KHR_draco_mesh_compression;
         bool FB_ngon_encoding;
         bool KHR_texture_basisu;
@@ -1165,6 +1182,7 @@ public:
                 KHR_materials_emissive_strength(false),
                 KHR_materials_specular(false),
                 KHR_materials_anisotropy(false),
+                KHR_materials_iridescence(false),
                 KHR_draco_mesh_compression(false),
                 FB_ngon_encoding(false),
                 KHR_texture_basisu(false) {

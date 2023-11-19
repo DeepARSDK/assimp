@@ -383,6 +383,18 @@ static aiMaterial *ImportMaterial(std::vector<int> &embeddedTexIdxs, Asset &r, M
             SetMaterialTextureProperty(embeddedTexIdxs, r, anisotropy.anisotropyTexture, aimat, AI_MATKEY_ANISOTROPY_TEXTURE);
         }
 
+        // KHR_materials_iridescence
+        if (mat.materialIridescence.isPresent) {
+            MaterialIridescence& iridescence = mat.materialIridescence.value;
+
+            aimat->AddProperty(&iridescence.iridescenceFactor, 1, AI_MATKEY_IRIDESCENCE_FACTOR);
+            SetMaterialTextureProperty(embeddedTexIdxs, r, iridescence.iridescenceTexture, aimat, AI_MATKEY_IRIDESCENCE_TEXTURE);
+            aimat->AddProperty(&iridescence.iridescenceIor, 1, AI_MATKEY_IRIDESCENCE_IOR);
+            aimat->AddProperty(&iridescence.iridescenceThicknessMinimum, 1, AI_MATKEY_IRIDESCENCE_THICKNESS_MIN);
+            aimat->AddProperty(&iridescence.iridescenceThicknessMaximum, 1, AI_MATKEY_IRIDESCENCE_THICKNESS_MAX);
+            SetMaterialTextureProperty(embeddedTexIdxs, r, iridescence.iridescenceThicknessTexture, aimat, AI_MATKEY_IRIDESCENCE_THICKNESS_TEXTURE);
+        }
+
         return aimat;
     } catch (...) {
         delete aimat;
