@@ -1454,6 +1454,21 @@ inline void Mesh::Read(Value &pJSON_Object, Asset &pAsset_Root) {
                 prim.material = pAsset_Root.materials.Retrieve(material->GetUint());
             }
 
+            Value *extensions = FindObject(primitive, "extensions");
+            if (nullptr != extensions) {
+                Value *khrMaterialsVariantsExtensions = FindObject(*extensions, "KHR_materials_variants");
+                if (nullptr != khrMaterialsVariantsExtensions) {
+                    Value *mappings = FindArray(*khrMaterialsVariantsExtensions, "mappings");
+                    if (nullptr != mappings) {
+                        for (unsigned int j = 0; j < mappings->Size(); ++j) {
+                            Value &mapping = (*mappings)[j];
+                            Value *material = FindUInt(mapping, "material");
+                            pAsset_Root.materials.Retrieve(material->GetUint());
+                        }
+                    }
+                }
+            }
+
             if (Value *attrs = FindObject(primitive, "attributes")) {
                 for (Value::MemberIterator it = attrs->MemberBegin(); it != attrs->MemberEnd(); ++it) {
                     if (!it->value.IsUint()) continue;
