@@ -1152,6 +1152,16 @@ inline void Texture::Read(Value &obj, Asset &r) {
     if (Value *samplerVal = FindUInt(obj, "sampler")) {
         sampler = r.samplers.Retrieve(samplerVal->GetUint());
     }
+
+    Value *extensionsVal = FindObject(obj, "extensions");
+    if (nullptr != extensionsVal) {
+        Value *extTextureWebpVal = FindObject(*extensionsVal, "EXT_texture_webp");
+        if (nullptr != extTextureWebpVal) {
+            if (Value *sourceVal = FindUInt(*extTextureWebpVal, "source")) {
+                source = r.images.Retrieve(sourceVal->GetUint());
+            }
+        }
+    }
 }
 
 void Material::SetTextureProperties(Asset &r, Value *prop, TextureInfo &out) {
