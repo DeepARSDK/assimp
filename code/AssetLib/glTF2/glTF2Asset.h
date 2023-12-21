@@ -55,6 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_specular import only
  *   KHR_materials_anisotropy import only
  *   KHR_materials_iridescence import only
+ *   EXT_texture_webp full
  */
 #ifndef GLTF2ASSET_H_INC
 #define GLTF2ASSET_H_INC
@@ -1168,6 +1169,7 @@ public:
         bool KHR_draco_mesh_compression;
         bool FB_ngon_encoding;
         bool KHR_texture_basisu;
+        bool EXT_texture_webp;
 
         Extensions() :
                 KHR_materials_pbrSpecularGlossiness(false), 
@@ -1185,7 +1187,8 @@ public:
                 KHR_materials_iridescence(false),
                 KHR_draco_mesh_compression(false),
                 FB_ngon_encoding(false),
-                KHR_texture_basisu(false) {
+                KHR_texture_basisu(false),
+                EXT_texture_webp(false) {
             // empty
         }
     } extensionsUsed;
@@ -1194,8 +1197,9 @@ public:
     struct RequiredExtensions {
         bool KHR_draco_mesh_compression;
         bool KHR_texture_basisu;
+        bool EXT_texture_webp;
 
-        RequiredExtensions() : KHR_draco_mesh_compression(false), KHR_texture_basisu(false) {
+        RequiredExtensions() : KHR_draco_mesh_compression(false), KHR_texture_basisu(false), EXT_texture_webp(false) {
             // empty
         }
     } extensionsRequired;

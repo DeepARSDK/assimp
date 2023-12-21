@@ -2133,6 +2133,7 @@ inline void Asset::ReadExtensionsUsed(Document &doc) {
     CHECK_EXT(KHR_materials_iridescence);
     CHECK_EXT(KHR_draco_mesh_compression);
     CHECK_EXT(KHR_texture_basisu);
+    CHECK_EXT(EXT_texture_webp);
 
 #undef CHECK_EXT
 }

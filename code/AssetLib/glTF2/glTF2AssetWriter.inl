@@ -721,7 +721,27 @@ namespace glTF2 {
     inline void Write(Value& obj, Texture& tex, AssetWriter& w)
     {
         if (tex.source) {
-            obj.AddMember("source", tex.source->index, w.mAl);
+            bool ext_texture_webp = false;
+            if (tex.customExtensions.name == "extensions" && tex.customExtensions.mValues.isPresent) {
+                Value extensions;
+                extensions.SetObject();
+                for (const CustomExtension &customExtension : tex.customExtensions.mValues.value) {
+                    if (customExtension.name == "EXT_texture_webp" && customExtension.mBoolValue.isPresent && customExtension.mBoolValue.value) {
+                        ext_texture_webp = true;
+                        Value extTextureWebp;
+                        extTextureWebp.SetObject();
+                        extTextureWebp.AddMember("source", tex.source->index, w.mAl);
+                        extensions.AddMember("EXT_texture_webp", extTextureWebp, w.mAl);
+                        break;
+                    }
+                }
+                if (!extensions.ObjectEmpty()) {
+                    obj.AddMember("extensions", extensions, w.mAl);
+                }
+            }
+            if (!ext_texture_webp) {
+                obj.AddMember("source", tex.source->index, w.mAl);
+            }
         }
         if (tex.sampler) {
             obj.AddMember("sampler", tex.sampler->index, w.mAl);
@@ -942,6 +962,10 @@ namespace glTF2 {
             if (this->mAsset.extensionsUsed.KHR_texture_basisu) {
                 exts.PushBack(StringRef("KHR_texture_basisu"), mAl);
             }
+
+            if (this->mAsset.extensionsUsed.EXT_texture_webp) {
+                exts.PushBack(StringRef("EXT_texture_webp"), mAl);
+            }
         }
 
         if (!exts.Empty())
@@ -952,6 +976,11 @@ namespace glTF2 {
         extsReq.SetArray();
         if (this->mAsset.extensionsUsed.KHR_texture_basisu) {
             extsReq.PushBack(StringRef("KHR_texture_basisu"), mAl);
+            mDoc.AddMember("extensionsRequired", extsReq, mAl);
+        }
+        // EXT_texture_webp extensionRequired
+        if (this->mAsset.extensionsUsed.EXT_texture_webp) {
+            extsReq.PushBack(StringRef("EXT_texture_webp"), mAl);
             mDoc.AddMember("extensionsRequired", extsReq, mAl);
         }
     }

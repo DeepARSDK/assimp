@@ -558,6 +558,17 @@ void glTF2Exporter::GetMatTex(const aiMaterial &mat, Ref<Texture> &texture, unsi
                         } else if (memcmp(curTex->achFormatHint, "bu", 2) == 0) {
                             useBasisUniversal = true;
                             mimeType += "basis";
+                        } else if (memcmp(curTex->achFormatHint, "web", 3) == 0) {
+                            mimeType += "webp";
+                            mAsset->extensionsUsed.EXT_texture_webp = true;
+                            mAsset->extensionsRequired.EXT_texture_webp = true;
+                            texture->customExtensions.name = "extensions";
+                            texture->customExtensions.mValues.isPresent = true;
+                            CustomExtension webpExt{};
+                            webpExt.name = "EXT_texture_webp";
+                            webpExt.mBoolValue.value = true;
+                            webpExt.mBoolValue.isPresent = true;
+                            texture->customExtensions.mValues.value.emplace_back(webpExt);
                         } else
                             mimeType += curTex->achFormatHint;
                         texture->source->mimeType = mimeType;
