@@ -582,6 +582,14 @@ void glTF2Importer::ImportMeshes(glTF2::Asset &r) {
                         aim->mColors[c] = GetVertexColorsForType<unsigned short>(attr.color[c]);
                     }
                 }
+
+                auto numComponents = attr.color[c]->GetNumComponents();
+                if (numComponents == 3) {
+                    // glTF standard specifies that the alpha value must be 1.0 when COLOR_n attribute is of type VEC3
+                    for (size_t i = 0; i < attr.color[c]->count; ++i) {
+                        aim->mColors[c][i].a = 1.0;
+                    }
+                }
             }
             for (size_t tc = 0; tc < attr.texcoord.size() && tc < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++tc) {
                 if (!attr.texcoord[tc]) {
