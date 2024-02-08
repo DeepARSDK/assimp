@@ -369,7 +369,7 @@ static aiMaterial *ImportMaterial(std::vector<int> &embeddedTexIdxs, Asset &r, M
             MaterialSpecular& specular = mat.materialSpecular.value;
 
             aimat->AddProperty(&specular.specularFactor, 1, AI_MATKEY_SPECULAR_FACTOR);
-            SetMaterialTextureProperty(embeddedTexIdxs, r, specular.specularTexture, aimat, AI_MATKEY_SPECULAR_TEXTURE);
+            SetMaterialTextureProperty(embeddedTexIdxs, r, specular.specularTexture, aimat, AI_MATKEY_SPECULAR_INTENSITY_TEXTURE);
             SetMaterialColorProperty(r, specular.specularColorFactor, aimat, AI_MATKEY_SPECULAR_COLOR_FACTOR);
             SetMaterialTextureProperty(embeddedTexIdxs, r, specular.specularColorTexture, aimat, AI_MATKEY_SPECULAR_COLOR_TEXTURE);
         }

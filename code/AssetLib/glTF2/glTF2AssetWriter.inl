@@ -525,6 +525,23 @@ namespace glTF2 {
             }
         }
 
+        if (m.materialSpecular.isPresent) {
+            Value materialSpecular(rapidjson::Type::kObjectType);
+
+            MaterialSpecular &specular = m.materialSpecular.value;
+
+            if (specular.specularFactor != 1.0f) {
+                WriteFloat(materialSpecular, specular.specularFactor, "specularFactor", w.mAl);
+            }
+            WriteVec(materialSpecular, specular.specularColorFactor, "specularColorFactor", defaultSpecularColorFactor, w.mAl);
+            WriteTex(materialSpecular, specular.specularTexture, "specularTexture", w.mAl);
+            WriteTex(materialSpecular, specular.specularColorTexture, "specularColorTexture", w.mAl);
+
+            if (!materialSpecular.ObjectEmpty()) {
+                exts.AddMember("KHR_materials_specular", materialSpecular, w.mAl);
+            }
+        }
+
         if (!exts.ObjectEmpty()) {
             obj.AddMember("extensions", exts, w.mAl);
         }
@@ -971,6 +988,10 @@ namespace glTF2 {
 
             if (this->mAsset.extensionsUsed.KHR_materials_emissive_strength) {
                 exts.PushBack(StringRef("KHR_materials_emissive_strength"), mAl);
+            }
+
+            if (this->mAsset.extensionsUsed.KHR_materials_specular) {
+                exts.PushBack(StringRef("KHR_materials_specular"), mAl);
             }
 
             if (this->mAsset.extensionsUsed.FB_ngon_encoding) {

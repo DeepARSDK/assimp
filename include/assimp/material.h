@@ -1068,6 +1068,7 @@ extern "C" {
 #define AI_MATKEY_SPECULAR_TEXTURE aiTextureType_SPECULAR, 0
 #define AI_MATKEY_SPECULAR_COLOR_FACTOR "$mat.specular.specularColorFactor", 0, 0
 #define AI_MATKEY_SPECULAR_COLOR_TEXTURE aiTextureType_SPECULAR, 1
+#define AI_MATKEY_SPECULAR_INTENSITY_TEXTURE aiTextureType_SPECULAR, 2
 
 // ---------------------------------------------------------------------------
 // Pure key names for all texture-related properties

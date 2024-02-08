@@ -748,6 +748,18 @@ bool glTF2Exporter::GetMatEmissiveStrength(const aiMaterial &mat, glTF2::Materia
     return mat.Get(AI_MATKEY_EMISSIVE_INTENSITY, emissiveStrength.emissiveStrength) == aiReturn_SUCCESS;
 }
 
+bool glTF2Exporter::GetMatSpecular(const aiMaterial& mat, glTF2::MaterialSpecular& specular) {
+    bool result = mat.Get(AI_MATKEY_SPECULAR_FACTOR, specular.specularFactor) == aiReturn_SUCCESS;
+
+    if (GetMatColor(mat, specular.specularColorFactor, AI_MATKEY_SPECULAR_COLOR_FACTOR) == aiReturn_SUCCESS) {
+        result = true;
+    }
+    GetMatTex(mat, specular.specularTexture, AI_MATKEY_SPECULAR_INTENSITY_TEXTURE);
+    GetMatTex(mat, specular.specularColorTexture, AI_MATKEY_SPECULAR_COLOR_TEXTURE);
+
+    return result || specular.specularTexture.texture || specular.specularColorTexture.texture;
+}
+
 void glTF2Exporter::ExportMaterials() {
     aiString aiName;
     for (unsigned int i = 0; i < mScene->mNumMaterials; ++i) {
@@ -877,6 +889,12 @@ void glTF2Exporter::ExportMaterials() {
                 if (GetMatIOR(mat, ior)) {
                     mAsset->extensionsUsed.KHR_materials_ior = true;
                     m->materialIOR = Nullable<MaterialIOR>(ior);
+                }
+
+                MaterialSpecular specular;
+                if (GetMatSpecular(mat, specular)) {
+                    mAsset->extensionsUsed.KHR_materials_specular = true;
+                    m->materialSpecular = Nullable<MaterialSpecular>(specular);
                 }
             }
 
