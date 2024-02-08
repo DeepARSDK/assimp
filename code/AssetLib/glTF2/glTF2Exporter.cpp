@@ -760,6 +760,17 @@ bool glTF2Exporter::GetMatSpecular(const aiMaterial& mat, glTF2::MaterialSpecula
     return result || specular.specularTexture.texture || specular.specularColorTexture.texture;
 }
 
+bool glTF2Exporter::GetMatAnisotropy(const aiMaterial& mat, glTF2::MaterialAnisotropy& anisotropy) {
+    bool result = mat.Get(AI_MATKEY_ANISOTROPY_FACTOR, anisotropy.anisotropyStrength) == aiReturn_SUCCESS;
+
+    if (mat.Get(AI_MATKEY_ANISOTROPY_ROTATION, anisotropy.anisotropyRotation) == aiReturn_SUCCESS) {
+        result = true;
+    }
+    GetMatTex(mat, anisotropy.anisotropyTexture, AI_MATKEY_ANISOTROPY_TEXTURE);
+
+    return result || anisotropy.anisotropyTexture.texture;
+}
+
 void glTF2Exporter::ExportMaterials() {
     aiString aiName;
     for (unsigned int i = 0; i < mScene->mNumMaterials; ++i) {
@@ -895,6 +906,12 @@ void glTF2Exporter::ExportMaterials() {
                 if (GetMatSpecular(mat, specular)) {
                     mAsset->extensionsUsed.KHR_materials_specular = true;
                     m->materialSpecular = Nullable<MaterialSpecular>(specular);
+                }
+
+                MaterialAnisotropy anisotropy;
+                if (GetMatAnisotropy(mat, anisotropy)) {
+                    mAsset->extensionsUsed.KHR_materials_anisotropy = true;
+                    m->materialAnisotropy = Nullable<MaterialAnisotropy>(anisotropy);
                 }
             }
 

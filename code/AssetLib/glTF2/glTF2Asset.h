@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_ior full
  *   KHR_materials_emissive_strength full
  *   KHR_materials_specular full
- *   KHR_materials_anisotropy import only
+ *   KHR_materials_anisotropy full
  *   KHR_materials_iridescence import only
  *   EXT_texture_webp full
  */
