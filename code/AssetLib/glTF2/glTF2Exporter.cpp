@@ -729,12 +729,12 @@ bool glTF2Exporter::GetMatTransmission(const aiMaterial &mat, glTF2::MaterialTra
 }
 
 bool glTF2Exporter::GetMatVolume(const aiMaterial &mat, glTF2::MaterialVolume &volume) {
-    bool result = mat.Get(AI_MATKEY_VOLUME_THICKNESS_FACTOR, volume.thicknessFactor) != aiReturn_SUCCESS;
+    bool result = mat.Get(AI_MATKEY_VOLUME_THICKNESS_FACTOR, volume.thicknessFactor) == aiReturn_SUCCESS;
 
     GetMatTex(mat, volume.thicknessTexture, AI_MATKEY_VOLUME_THICKNESS_TEXTURE);
 
-    result = result || mat.Get(AI_MATKEY_VOLUME_ATTENUATION_DISTANCE, volume.attenuationDistance);
-    result = result || GetMatColor(mat, volume.attenuationColor, AI_MATKEY_VOLUME_ATTENUATION_COLOR) != aiReturn_SUCCESS;
+    result = (mat.Get(AI_MATKEY_VOLUME_ATTENUATION_DISTANCE, volume.attenuationDistance) == aiReturn_SUCCESS) || result;
+    result = (GetMatColor(mat, volume.attenuationColor, AI_MATKEY_VOLUME_ATTENUATION_COLOR) == aiReturn_SUCCESS) || result;
 
     // Valid if any of these properties are available
     return result || volume.thicknessTexture.texture;
