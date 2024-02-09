@@ -560,6 +560,31 @@ namespace glTF2 {
             }
         }
 
+        if (m.materialIridescence.isPresent) {
+            Value materialIridescence(rapidjson::Type::kObjectType);
+
+            MaterialIridescence &iridescence = m.materialIridescence.value;
+
+            if (iridescence.iridescenceFactor != 0.0f) {
+                WriteFloat(materialIridescence, iridescence.iridescenceFactor, "iridescenceFactor", w.mAl);
+            }
+            if (iridescence.iridescenceIor != 1.3f) {
+                WriteFloat(materialIridescence, iridescence.iridescenceIor, "iridescenceIor", w.mAl);
+            }
+            if (iridescence.iridescenceThicknessMinimum != 100.0f) {
+                WriteFloat(materialIridescence, iridescence.iridescenceThicknessMinimum, "iridescenceThicknessMinimum", w.mAl);
+            }
+            if (iridescence.iridescenceThicknessMaximum != 400.0f) {
+                WriteFloat(materialIridescence, iridescence.iridescenceThicknessMaximum, "iridescenceThicknessMaximum", w.mAl);
+            }
+            WriteTex(materialIridescence, iridescence.iridescenceTexture, "iridescenceTexture", w.mAl);
+            WriteTex(materialIridescence, iridescence.iridescenceThicknessTexture, "iridescenceThicknessTexture", w.mAl);
+
+            if (!materialIridescence.ObjectEmpty()) {
+                exts.AddMember("KHR_materials_iridescence", materialIridescence, w.mAl);
+            }
+        }
+
         if (!exts.ObjectEmpty()) {
             obj.AddMember("extensions", exts, w.mAl);
         }
@@ -1016,6 +1041,10 @@ namespace glTF2 {
                 exts.PushBack(StringRef("KHR_materials_anisotropy"), mAl);
             }
 
+            if (this->mAsset.extensionsUsed.KHR_materials_iridescence) {
+                exts.PushBack(StringRef("KHR_materials_iridescence"), mAl);
+            }
+
             if (this->mAsset.extensionsUsed.FB_ngon_encoding) {
                 exts.PushBack(StringRef("FB_ngon_encoding"), mAl);
             }
@@ -1059,6 +1088,8 @@ namespace glTF2 {
             if (nullptr != exts) {
                 mDoc.AddMember("extensions", Value().SetObject().Move(), mDoc.GetAllocator());
                 exts = FindObject(mDoc, "extensions");
+            } else {
+                return;
             }
 
             container = FindObjectInContext(*exts, d.mExtId, "extensions");

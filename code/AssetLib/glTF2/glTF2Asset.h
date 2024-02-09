@@ -54,7 +54,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_emissive_strength full
  *   KHR_materials_specular full
  *   KHR_materials_anisotropy full
- *   KHR_materials_iridescence import only
+ *   KHR_materials_iridescence full
  *   EXT_texture_webp full
  */
 #ifndef GLTF2ASSET_H_INC

@@ -771,6 +771,25 @@ bool glTF2Exporter::GetMatAnisotropy(const aiMaterial& mat, glTF2::MaterialAniso
     return result || anisotropy.anisotropyTexture.texture;
 }
 
+bool glTF2Exporter::GetMatIridescence(const aiMaterial& mat, glTF2::MaterialIridescence& iridescence) {
+    bool result = mat.Get(AI_MATKEY_IRIDESCENCE_FACTOR, iridescence.iridescenceFactor) == aiReturn_SUCCESS;
+
+    GetMatTex(mat, iridescence.iridescenceTexture, AI_MATKEY_IRIDESCENCE_TEXTURE);
+
+    if (mat.Get(AI_MATKEY_IRIDESCENCE_IOR, iridescence.iridescenceIor) == aiReturn_SUCCESS) {
+        result = true;
+    }
+    if (mat.Get(AI_MATKEY_IRIDESCENCE_THICKNESS_MIN, iridescence.iridescenceThicknessMinimum) == aiReturn_SUCCESS) {
+        result = true;
+    }
+    if (mat.Get(AI_MATKEY_IRIDESCENCE_THICKNESS_MAX, iridescence.iridescenceThicknessMaximum) == aiReturn_SUCCESS) {
+        result = true;
+    }
+    GetMatTex(mat, iridescence.iridescenceThicknessTexture, AI_MATKEY_IRIDESCENCE_TEXTURE);
+
+    return result || iridescence.iridescenceTexture.texture || iridescence.iridescenceThicknessTexture.texture;
+}
+
 void glTF2Exporter::ExportMaterials() {
     aiString aiName;
     for (unsigned int i = 0; i < mScene->mNumMaterials; ++i) {
@@ -912,6 +931,12 @@ void glTF2Exporter::ExportMaterials() {
                 if (GetMatAnisotropy(mat, anisotropy)) {
                     mAsset->extensionsUsed.KHR_materials_anisotropy = true;
                     m->materialAnisotropy = Nullable<MaterialAnisotropy>(anisotropy);
+                }
+
+                MaterialIridescence iridescence;
+                if (GetMatIridescence(mat, iridescence)) {
+                    mAsset->extensionsUsed.KHR_materials_iridescence = true;
+                    m->materialIridescence = Nullable<MaterialIridescence>(iridescence);
                 }
             }
 
