@@ -669,7 +669,7 @@ ELSE()
       TARGET_USE_COMMON_OUTPUT_DIRECTORY(draco_encoder)
       TARGET_USE_COMMON_OUTPUT_DIRECTORY(draco_decoder)
 
-      set(draco_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/contrib/draco/src")
+      set(draco_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/contrib/draco/src" "${CMAKE_BINARY_DIR}")
 
       # This is probably wrong
       INSTALL( TARGETS ${draco_LIBRARIES}
