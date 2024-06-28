@@ -395,6 +395,20 @@ static aiMaterial *ImportMaterial(std::vector<int> &embeddedTexIdxs, Asset &r, M
             SetMaterialTextureProperty(embeddedTexIdxs, r, iridescence.iridescenceThicknessTexture, aimat, AI_MATKEY_IRIDESCENCE_THICKNESS_TEXTURE);
         }
 
+        // DEEPAR_materials_diamond
+        if (mat.materialDiamond.isPresent) {
+            MaterialDiamond& diamond = mat.materialDiamond.value;
+
+            aimat->AddProperty(&diamond.dispersion, 1, AI_MATKEY_DIAMOND_DISPERSION);
+            SetMaterialColorProperty(r, diamond.boostFactors, aimat, AI_MATKEY_DIAMOND_BOOST_FACTORS);
+            aimat->AddProperty(&diamond.envMapIntensity, 1, AI_MATKEY_DIAMOND_ENV_MAP_INTENSITY);
+            aimat->AddProperty(&diamond.envMapRotation, 1, AI_MATKEY_DIAMOND_ENV_MAP_ROTATION);
+            aimat->AddProperty(&diamond.reflectivity, 1, AI_MATKEY_DIAMOND_REFLECTIVITY);
+            SetMaterialColorProperty(r, diamond.colorCorrection, aimat, AI_MATKEY_DIAMOND_COLOR_CORRECTION);
+            aimat->AddProperty(&diamond.absorptionFactor, 1, AI_MATKEY_DIAMOND_ABSORPTION_FACTOR);
+            aimat->AddProperty(&diamond.rayBounces, 1, AI_MATKEY_DIAMOND_RAY_BOUNCES);
+        }
+
         return aimat;
     } catch (...) {
         delete aimat;

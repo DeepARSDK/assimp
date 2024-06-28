@@ -585,6 +585,42 @@ namespace glTF2 {
             }
         }
 
+        if (m.materialDiamond.isPresent) {
+            Value materialDiamond(rapidjson::Type::kObjectType);
+
+            MaterialDiamond &diamond = m.materialDiamond.value;
+
+            if (diamond.dispersion != 0.0f) {
+                WriteFloat(materialDiamond, diamond.dispersion, "dispersion", w.mAl);
+            }
+
+            WriteVec(materialDiamond, diamond.boostFactors, "boostFactors", defaultBoostFactors, w.mAl);
+
+            if (diamond.envMapIntensity != 1.0f) {
+                WriteFloat(materialDiamond, diamond.envMapIntensity, "envMapIntensity", w.mAl);
+            }
+            if (diamond.envMapRotation != 0.0f) {
+                WriteFloat(materialDiamond, diamond.envMapRotation, "envMapRotation", w.mAl);
+            }
+            if (diamond.reflectivity != 0.5f) {
+                WriteFloat(materialDiamond, diamond.reflectivity, "reflectivity", w.mAl);
+            }
+
+            WriteVec(materialDiamond, diamond.colorCorrection, "colorCorrection", defaultColorCorrection, w.mAl);
+
+            if (diamond.absorptionFactor != 1.0f) {
+                WriteFloat(materialDiamond, diamond.absorptionFactor, "absorptionFactor", w.mAl);
+            }
+
+            if (diamond.rayBounces != 0) {
+                WriteFloat(materialDiamond, diamond.rayBounces, "rayBounces", w.mAl);
+            }
+
+            if (!materialDiamond.ObjectEmpty()) {
+                exts.AddMember("DEEPAR_materials_diamond", materialDiamond, w.mAl);
+            }
+        }
+
         if (!exts.ObjectEmpty()) {
             obj.AddMember("extensions", exts, w.mAl);
         }
@@ -1043,6 +1079,10 @@ namespace glTF2 {
 
             if (this->mAsset.extensionsUsed.KHR_materials_iridescence) {
                 exts.PushBack(StringRef("KHR_materials_iridescence"), mAl);
+            }
+
+            if (this->mAsset.extensionsUsed.DEEPAR_materials_diamond) {
+                exts.PushBack(StringRef("DEEPAR_materials_diamond"), mAl);
             }
 
             if (this->mAsset.extensionsUsed.FB_ngon_encoding) {

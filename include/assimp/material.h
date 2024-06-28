@@ -1006,6 +1006,16 @@ extern "C" {
 #define AI_MATKEY_IRIDESCENCE_THICKNESS_MIN "mat.iridescenceThicknessMin", 0, 0
 #define AI_MATKEY_IRIDESCENCE_THICKNESS_TEXTURE aiTextureType_IRIDESCENCE, 1
 
+// Iridescence
+#define AI_MATKEY_DIAMOND_DISPERSION "$mat.diamondDispersion", 0, 0
+#define AI_MATKEY_DIAMOND_BOOST_FACTORS "$mat.diamondBoostFactors", 0, 0
+#define AI_MATKEY_DIAMOND_ENV_MAP_INTENSITY "$mat.diamondEnvMapIntensity", 0, 0
+#define AI_MATKEY_DIAMOND_ENV_MAP_ROTATION "$mat.diamondEnvMapRotation", 0, 0
+#define AI_MATKEY_DIAMOND_REFLECTIVITY "$mat.diamondReflectivity", 0, 0
+#define AI_MATKEY_DIAMOND_COLOR_CORRECTION "$mat.diamondColorCorrection", 0, 0
+#define AI_MATKEY_DIAMOND_ABSORPTION_FACTOR "$mat.diamondAbsorptionFactor", 0, 0
+#define AI_MATKEY_DIAMOND_RAY_BOUNCES "$mat.diamondRayBounces", 0, 0
+
 // Specular/Glossiness Workflow
 // ---------------------------
 // Diffuse/Albedo Color. Note: Pure Metals have a diffuse of {0,0,0}

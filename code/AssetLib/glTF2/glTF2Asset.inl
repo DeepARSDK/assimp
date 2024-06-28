@@ -1374,6 +1374,22 @@ inline void Material::Read(Value &material, Asset &r) {
             }
         }
 
+        if (r.extensionsUsed.DEEPAR_materials_diamond) {
+            if (Value* curMaterialDiamond = FindObject(*extensions, "DEEPAR_materials_diamond")){
+                MaterialDiamond diamond;
+                ReadMember(*curMaterialDiamond, "dispersion", diamond.dispersion);
+                ReadMember(*curMaterialDiamond, "envMapIntensity", diamond.envMapIntensity);
+                ReadMember(*curMaterialDiamond, "envMapRotation", diamond.envMapRotation);
+                ReadMember(*curMaterialDiamond, "reflectivity", diamond.reflectivity);
+                ReadMember(*curMaterialDiamond, "absorptionFactor", diamond.absorptionFactor);
+                ReadMember(*curMaterialDiamond, "rayBounces", diamond.rayBounces);
+                ReadMember(*curMaterialDiamond, "boostFactors", diamond.boostFactors);
+                ReadMember(*curMaterialDiamond, "colorCorrection", diamond.colorCorrection);
+
+                this->materialDiamond = Nullable<MaterialDiamond>(diamond);
+            }
+        }
+
         unlit = nullptr != FindObject(*extensions, "KHR_materials_unlit");
     }
 }
@@ -1439,6 +1455,18 @@ inline void MaterialIridescence::SetDefaults() {
     iridescenceIor = 1.3f;
     iridescenceThicknessMinimum = 100.0f;
     iridescenceThicknessMaximum = 400.0f;
+}
+
+inline void MaterialDiamond::SetDefaults() {
+    // DEEPAR_materials_diamond
+    dispersion = 0.0f;
+    SetVector(boostFactors, defaultBoostFactors);
+    envMapIntensity = 1.0f;
+    envMapRotation = 0.0f;
+    reflectivity = 0.5f;
+    SetVector(colorCorrection, defaultColorCorrection);
+    absorptionFactor = 1.0f;
+    rayBounces = 0;
 }
 
 inline void Mesh::Read(Value &pJSON_Object, Asset &pAsset_Root) {
@@ -2131,6 +2159,7 @@ inline void Asset::ReadExtensionsUsed(Document &doc) {
     CHECK_EXT(KHR_materials_specular);
     CHECK_EXT(KHR_materials_anisotropy);
     CHECK_EXT(KHR_materials_iridescence);
+    CHECK_EXT(DEEPAR_materials_diamond);
     CHECK_EXT(KHR_draco_mesh_compression);
     CHECK_EXT(KHR_texture_basisu);
     CHECK_EXT(EXT_texture_webp);

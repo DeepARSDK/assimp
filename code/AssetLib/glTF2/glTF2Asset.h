@@ -56,6 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_anisotropy full
  *   KHR_materials_iridescence full
  *   EXT_texture_webp full
+ *   DEEPAR_materials_diamond full
  */
 #ifndef GLTF2ASSET_H_INC
 #define GLTF2ASSET_H_INC
@@ -726,6 +727,9 @@ const vec3 defaultSpecularFactor = { 1, 1, 1 };
 const vec3 defaultSheenFactor = { 0, 0, 0 };
 const vec3 defaultAttenuationColor = { 1, 1, 1 };
 const vec3 defaultSpecularColorFactor = { 1, 1, 1 };
+const vec3 defaultBoostFactors = { 1, 1, 1 };
+const vec3 defaultColorCorrection = { 1, 1, 1 };
+
 
 struct TextureInfo {
     Ref<Texture> texture;
@@ -845,6 +849,20 @@ struct MaterialIridescence {
     void SetDefaults();
 };
 
+struct MaterialDiamond {
+    float dispersion = 0.f;
+    vec3 boostFactors;
+    float envMapIntensity = 0.f;
+    float envMapRotation = 0.f;
+    float reflectivity = 0.f;
+    vec3 colorCorrection;
+    float absorptionFactor = 0.f;
+    int rayBounces = 0;
+
+    MaterialDiamond() { SetDefaults(); }
+    void SetDefaults();
+};
+
 //! The material appearance of a primitive.
 struct Material : public Object {
     //PBR metallic roughness properties
@@ -891,6 +909,9 @@ struct Material : public Object {
 
     // extension: KHR_materials_iridescence
     Nullable<MaterialIridescence> materialIridescence;
+
+    // extension: DEEPAR_materials_diamond
+    Nullable<MaterialDiamond> materialDiamond;
 
     Material() { SetDefaults(); }
     void Read(Value &obj, Asset &r);
@@ -1166,6 +1187,7 @@ public:
         bool KHR_materials_specular;
         bool KHR_materials_anisotropy;
         bool KHR_materials_iridescence;
+        bool DEEPAR_materials_diamond;
         bool KHR_draco_mesh_compression;
         bool FB_ngon_encoding;
         bool KHR_texture_basisu;
@@ -1185,6 +1207,7 @@ public:
                 KHR_materials_specular(false),
                 KHR_materials_anisotropy(false),
                 KHR_materials_iridescence(false),
+                DEEPAR_materials_diamond(false),
                 KHR_draco_mesh_compression(false),
                 FB_ngon_encoding(false),
                 KHR_texture_basisu(false),

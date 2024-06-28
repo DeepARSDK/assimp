@@ -790,6 +790,40 @@ bool glTF2Exporter::GetMatIridescence(const aiMaterial& mat, glTF2::MaterialIrid
     return result || iridescence.iridescenceTexture.texture || iridescence.iridescenceThicknessTexture.texture;
 }
 
+bool glTF2Exporter::GetMatDiamond(const aiMaterial& mat, glTF2::MaterialDiamond& diamond) {
+    bool result = mat.Get(AI_MATKEY_DIAMOND_DISPERSION, diamond.dispersion) == aiReturn_SUCCESS;
+
+    if (GetMatColor(mat, diamond.boostFactors, AI_MATKEY_DIAMOND_BOOST_FACTORS) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (mat.Get(AI_MATKEY_DIAMOND_ENV_MAP_INTENSITY, diamond.envMapIntensity) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (mat.Get(AI_MATKEY_DIAMOND_ENV_MAP_ROTATION, diamond.envMapRotation) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (mat.Get(AI_MATKEY_DIAMOND_REFLECTIVITY, diamond.reflectivity) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (GetMatColor(mat, diamond.colorCorrection, AI_MATKEY_DIAMOND_COLOR_CORRECTION) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (mat.Get(AI_MATKEY_DIAMOND_ABSORPTION_FACTOR, diamond.absorptionFactor) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    if (mat.Get(AI_MATKEY_DIAMOND_RAY_BOUNCES, diamond.rayBounces) == aiReturn_SUCCESS) {
+        result = true;
+    }
+
+    return result;
+}
+
 void glTF2Exporter::ExportMaterials() {
     aiString aiName;
     for (unsigned int i = 0; i < mScene->mNumMaterials; ++i) {
@@ -937,6 +971,12 @@ void glTF2Exporter::ExportMaterials() {
                 if (GetMatIridescence(mat, iridescence)) {
                     mAsset->extensionsUsed.KHR_materials_iridescence = true;
                     m->materialIridescence = Nullable<MaterialIridescence>(iridescence);
+                }
+
+                MaterialDiamond diamond;
+                if (GetMatDiamond(mat, diamond)) {
+                    mAsset->extensionsUsed.DEEPAR_materials_diamond = true;
+                    m->materialDiamond = Nullable<MaterialDiamond>(diamond);
                 }
             }
 
