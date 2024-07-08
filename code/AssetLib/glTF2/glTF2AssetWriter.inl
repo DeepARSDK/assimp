@@ -585,6 +585,20 @@ namespace glTF2 {
             }
         }
 
+        if (m.materialDispersion.isPresent) {
+            Value materialDispersion(rapidjson::Type::kObjectType);
+
+            MaterialDispersion &dispersion = m.materialDispersion.value;
+
+            if (dispersion.dispersion != 0.0f) {
+                WriteFloat(materialDispersion, dispersion.dispersion, "dispersion", w.mAl);
+            }
+
+            if (!materialDispersion.ObjectEmpty()) {
+                exts.AddMember("KHR_materials_dispersion", materialDispersion, w.mAl);
+            }
+        }
+
         if (m.materialDiamond.isPresent) {
             Value materialDiamond(rapidjson::Type::kObjectType);
 
@@ -1079,6 +1093,10 @@ namespace glTF2 {
 
             if (this->mAsset.extensionsUsed.KHR_materials_iridescence) {
                 exts.PushBack(StringRef("KHR_materials_iridescence"), mAl);
+            }
+
+            if (this->mAsset.extensionsUsed.KHR_materials_dispersion) {
+                exts.PushBack(StringRef("KHR_materials_dispersion"), mAl);
             }
 
             if (this->mAsset.extensionsUsed.DEEPAR_materials_diamond) {

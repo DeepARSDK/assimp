@@ -85,6 +85,7 @@ struct MaterialEmissiveStrength;
 struct MaterialSpecular;
 struct MaterialAnisotropy;
 struct MaterialIridescence;
+struct MaterialDispersion;
 struct MaterialDiamond;
 
 // Vec/matrix types, as raw float arrays
@@ -130,6 +131,7 @@ protected:
     bool GetMatSpecular(const aiMaterial &mat, glTF2::MaterialSpecular &specular);
     bool GetMatAnisotropy(const aiMaterial &mat, glTF2::MaterialAnisotropy &anisotropy);
     bool GetMatIridescence(const aiMaterial &mat, glTF2::MaterialIridescence &iridescence);
+    bool GetMatDispersion(const aiMaterial &mat, glTF2::MaterialDispersion &dispersion);
     bool GetMatDiamond(const aiMaterial &mat, glTF2::MaterialDiamond &diamond);
     void ExportMetadata();
     void ExportMaterials();

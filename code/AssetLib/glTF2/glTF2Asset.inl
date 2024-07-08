@@ -1374,6 +1374,16 @@ inline void Material::Read(Value &material, Asset &r) {
             }
         }
 
+        if (r.extensionsUsed.KHR_materials_dispersion) {
+            if (Value* curMaterialDispersion = FindObject(*extensions, "KHR_materials_dispersion")) {
+                MaterialDispersion dispersion;
+
+                ReadMember(*curMaterialDispersion, "dispersion", dispersion.dispersion);
+
+                this->materialDispersion = Nullable<MaterialDispersion>(dispersion);
+            }
+        }
+
         if (r.extensionsUsed.DEEPAR_materials_diamond) {
             if (Value* curMaterialDiamond = FindObject(*extensions, "DEEPAR_materials_diamond")){
                 MaterialDiamond diamond;
@@ -1455,6 +1465,11 @@ inline void MaterialIridescence::SetDefaults() {
     iridescenceIor = 1.3f;
     iridescenceThicknessMinimum = 100.0f;
     iridescenceThicknessMaximum = 400.0f;
+}
+
+inline void MaterialDispersion::SetDefaults() {
+    // KHR_materials_dispersion
+    dispersion = 0.0f;
 }
 
 inline void MaterialDiamond::SetDefaults() {
@@ -2159,6 +2174,7 @@ inline void Asset::ReadExtensionsUsed(Document &doc) {
     CHECK_EXT(KHR_materials_specular);
     CHECK_EXT(KHR_materials_anisotropy);
     CHECK_EXT(KHR_materials_iridescence);
+    CHECK_EXT(KHR_materials_dispersion);
     CHECK_EXT(DEEPAR_materials_diamond);
     CHECK_EXT(KHR_draco_mesh_compression);
     CHECK_EXT(KHR_texture_basisu);

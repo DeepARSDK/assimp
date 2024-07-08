@@ -395,6 +395,13 @@ static aiMaterial *ImportMaterial(std::vector<int> &embeddedTexIdxs, Asset &r, M
             SetMaterialTextureProperty(embeddedTexIdxs, r, iridescence.iridescenceThicknessTexture, aimat, AI_MATKEY_IRIDESCENCE_THICKNESS_TEXTURE);
         }
 
+        // KHR_materials_diamonds
+        if (mat.materialDispersion.isPresent) {
+            MaterialDispersion& dispersion = mat.materialDispersion.value;
+
+            aimat->AddProperty(&dispersion.dispersion, 1, AI_MATKEY_DISPERSION);
+        }
+
         // DEEPAR_materials_diamond
         if (mat.materialDiamond.isPresent) {
             MaterialDiamond& diamond = mat.materialDiamond.value;

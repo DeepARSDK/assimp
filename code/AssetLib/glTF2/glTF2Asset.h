@@ -55,6 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *   KHR_materials_specular full
  *   KHR_materials_anisotropy full
  *   KHR_materials_iridescence full
+ *   KHR_materials_dispersion
  *   EXT_texture_webp full
  *   DEEPAR_materials_diamond full
  */
@@ -849,6 +850,13 @@ struct MaterialIridescence {
     void SetDefaults();
 };
 
+struct MaterialDispersion {
+    float dispersion = 0.f;
+
+    MaterialDispersion() { SetDefaults(); }
+    void SetDefaults();
+};
+
 struct MaterialDiamond {
     float dispersion = 0.f;
     vec3 boostFactors;
@@ -909,6 +917,9 @@ struct Material : public Object {
 
     // extension: KHR_materials_iridescence
     Nullable<MaterialIridescence> materialIridescence;
+
+    // extension: KHR_materials_dispersion
+    Nullable<MaterialDispersion> materialDispersion;
 
     // extension: DEEPAR_materials_diamond
     Nullable<MaterialDiamond> materialDiamond;
@@ -1187,6 +1198,7 @@ public:
         bool KHR_materials_specular;
         bool KHR_materials_anisotropy;
         bool KHR_materials_iridescence;
+        bool KHR_materials_dispersion;
         bool DEEPAR_materials_diamond;
         bool KHR_draco_mesh_compression;
         bool FB_ngon_encoding;
@@ -1207,6 +1219,7 @@ public:
                 KHR_materials_specular(false),
                 KHR_materials_anisotropy(false),
                 KHR_materials_iridescence(false),
+                KHR_materials_dispersion(false),
                 DEEPAR_materials_diamond(false),
                 KHR_draco_mesh_compression(false),
                 FB_ngon_encoding(false),

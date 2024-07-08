@@ -790,6 +790,10 @@ bool glTF2Exporter::GetMatIridescence(const aiMaterial& mat, glTF2::MaterialIrid
     return result || iridescence.iridescenceTexture.texture || iridescence.iridescenceThicknessTexture.texture;
 }
 
+bool glTF2Exporter::GetMatDispersion(const aiMaterial& mat, glTF2::MaterialDispersion& dispersion) {
+    return mat.Get(AI_MATKEY_DISPERSION, dispersion.dispersion) == aiReturn_SUCCESS;
+}
+
 bool glTF2Exporter::GetMatDiamond(const aiMaterial& mat, glTF2::MaterialDiamond& diamond) {
     bool result = mat.Get(AI_MATKEY_DIAMOND_DISPERSION, diamond.dispersion) == aiReturn_SUCCESS;
 
@@ -971,6 +975,12 @@ void glTF2Exporter::ExportMaterials() {
                 if (GetMatIridescence(mat, iridescence)) {
                     mAsset->extensionsUsed.KHR_materials_iridescence = true;
                     m->materialIridescence = Nullable<MaterialIridescence>(iridescence);
+                }
+
+                MaterialDispersion dispersion;
+                if (GetMatDispersion(mat, dispersion)) {
+                    mAsset->extensionsUsed.KHR_materials_dispersion = true;
+                    m->materialDispersion = Nullable<MaterialDispersion>(dispersion);
                 }
 
                 MaterialDiamond diamond;
