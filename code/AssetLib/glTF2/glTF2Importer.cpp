@@ -428,15 +428,29 @@ void glTF2Importer::ImportMaterials(Asset &r) {
     ASSIMP_LOG_DEBUG("Importing ", numImportedMaterials, " materials");
     Material defaultMaterial;
 
-    mScene->mNumMaterials = ((numImportedMaterials == 0) ? 1 : numImportedMaterials);
+    bool needsDefaultMaterial = (numImportedMaterials == 0);
+    if (!needsDefaultMaterial) {
+        for (unsigned int m = 0; m < r.meshes.Size(); ++m) {
+            Mesh &mesh = r.meshes[m];
+            for (auto &prim : mesh.primitives) {
+                if (!prim.material) {
+                    needsDefaultMaterial = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    mScene->mNumMaterials = (needsDefaultMaterial ? numImportedMaterials + 1 : numImportedMaterials);
     mScene->mMaterials = new aiMaterial *[mScene->mNumMaterials];
     std::fill(mScene->mMaterials, mScene->mMaterials + mScene->mNumMaterials, nullptr);
-    if (numImportedMaterials == 0) {
-        mScene->mMaterials[numImportedMaterials] = ImportMaterial(mEmbeddedTexIdxs, r, defaultMaterial);
-    }
 
     for (unsigned int i = 0; i < numImportedMaterials; ++i) {
         mScene->mMaterials[i] = ImportMaterial(mEmbeddedTexIdxs, r, r.materials[i]);
+    }
+
+    if (needsDefaultMaterial) {
+        mScene->mMaterials[numImportedMaterials] = ImportMaterial(mEmbeddedTexIdxs, r, defaultMaterial);
     }
 }
 
