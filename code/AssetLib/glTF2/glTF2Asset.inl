@@ -1161,6 +1161,13 @@ inline void Texture::Read(Value &obj, Asset &r) {
             if (Value *sourceVal = FindUInt(*extTextureWebpVal, "source")) {
                 source = r.images.Retrieve(sourceVal->GetUint());
             }
+        } else {
+            Value *extTextureBasisUVal = FindObject(*extensionsVal, "KHR_texture_basisu");
+            if (nullptr != extTextureBasisUVal) {
+                if (Value *sourceVal = FindUInt(*extTextureBasisUVal, "source")) {
+                    source = r.images.Retrieve(sourceVal->GetUint());
+                }
+            }
         }
     }
 }
